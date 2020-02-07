@@ -19,6 +19,8 @@ One argument is required to run this container: the root directory of a Python a
 
 Typically this container would run as a custom build step in a Cloud Build pipeline after preparing a deployment directory, but before actually deploying it to Google App Engine.
 
+It will copy the provided directory into a temporary directory to run the test in and install dependencies, so it will not pollute the original directory.
+
 ```
 - name: 'gcr.io/$PROJECT_ID/cloudbuilder-unittest'
   args: ['/workspace/my-app-deployment-dir']
