@@ -1,0 +1,22 @@
+---
+schemaVersion: "2.0.0"
+
+fileExistenceTests:
+  - name: 'coverage entrypoint'
+    path: '/usr/local/bin/docker-coverage.sh'
+    shouldExist: true
+    isExecutableBy: 'owner'
+
+metadataTest:
+  entrypoint: ["docker-coverage.sh"]
+  workdir: "/workspace"
+
+commandTests:
+  - name: "python 3.7 exists"
+    command: "which"
+    args: ["/usr/bin/python3.7"]
+    expectedOutput: ['/usr/bin/python3.7\n']
+
+
+
+
