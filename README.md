@@ -22,8 +22,11 @@ Typically this container would run as a custom build step in a Cloud Build pipel
 It will copy the provided directory into a temporary directory to run the test in and install dependencies, so it will not pollute the original directory.
 
 ```
-- name: 'gcr.io/$PROJECT_ID/cloudbuilder-unittest'
-  args: ['/workspace/my-app-deployment-dir']
+# Run python unittests
+- name: 'eu.gcr.io/vwt-d-gew1-dat-cloudbuilders/cloudbuilder-unittest'
+  args: ['/workspace/my_api_dir/api_server']
+  env:
+    - PROJECT_ID=$PROJECT_ID
 ```
 
 Or locally on a dev laptop with /workspace as a mounted volume for some local directory:
