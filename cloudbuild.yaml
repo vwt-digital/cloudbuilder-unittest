@@ -1,5 +1,6 @@
 ---
-steps:
+  timeout: 1200s
+  steps:
   # Build an image.
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'eu.gcr.io/$PROJECT_ID/cloudbuilder-unittest', '.']
@@ -28,7 +29,6 @@ steps:
 
   # (Re)create auto-approve scheduled job
   - name: 'gcr.io/cloud-builders/gcloud'
-    timeout: 1200s
     args:
       - 'scheduler'
       - 'jobs'
