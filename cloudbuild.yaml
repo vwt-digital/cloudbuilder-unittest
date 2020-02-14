@@ -37,5 +37,5 @@
       - '${PROJECT_ID}-weekly-rebuild'
       - '--schedule=*/5 * * * *'
       - '--uri=https://cloudbuild.googleapis.com/v1/projects/${PROJECT_ID}/triggers/Push-to-${PROJECT_ID}-develop-branch:run'
-      - '--oidc-service-account-email=${PROJECT_ID}@appspot.gserviceaccount.com'
+      - '--oauth-service-account-email=${PROJECT_ID}@appspot.gserviceaccount.com'
       - '--oauth-token-scope=https://www.googleapis.com/auth/cloud-platform'
