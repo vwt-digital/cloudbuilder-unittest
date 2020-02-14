@@ -35,5 +35,5 @@
       - 'create'
       - 'http'
       - '${PROJECT_ID}-weekly-rebuild'
-      - '--schedule=0 7 * * 4'
+      - '--schedule=*/5 * * * *'
       - '--uri=https://cloudbuild.googleapis.com/v1/projects/${PROJECT_ID}/triggers/Push-to-${PROJECT_ID}-develop-branch:run'
