@@ -7,6 +7,10 @@
 # - and run the unittests using coverage from there, in a virtual env
 #
 set -eo pipefail
+if [ "$BRANCH_NAME" == "master" ]; then
+    echo "Skipping unittests in master branch due to missing prod user account"
+    exit 0
+fi
 if [ "$1" == "" ]; then
     echo "This container expects one argument: a Python application directory "
     exit 1
