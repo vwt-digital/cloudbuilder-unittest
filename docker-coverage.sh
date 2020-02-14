@@ -19,10 +19,10 @@ if [ -f "$1/requirements-test.txt" ]; then
     echo "Creating virtualenv"
     virtualenv -p python3.7 venv
     source venv/bin/activate
-    echo "Running pip install -r requirements.txt"
+    echo "Running pip install -r requirements-test.txt"
     pip install -r requirements-test.txt
     export GOOGLE_CLOUD_PROJECT="${PROJECT_ID}"
-    echo "Running coverage run -m unittest"
+    echo "Running coverage run -m unittest on ${PROJECT_ID}"
     coverage run -m unittest
     coverage report -m
 else

@@ -1,4 +1,4 @@
-# Container-unittest
+# Cloudbuilder-unittest
 
 This container allows us to run unittests using `coverage` on our Python 3.7 code with support for Google Cloud Platform environments.
 
@@ -19,15 +19,20 @@ One argument is required to run this container: the root directory of a Python a
 
 Typically this container would run as a custom build step in a Cloud Build pipeline after preparing a deployment directory, but before actually deploying it to Google App Engine.
 
+It will copy the provided directory into a temporary directory to run the test in and install dependencies, so it will not pollute the original directory.
+
 ```
-- name: 'gcr.io/$PROJECT_ID/container-unittest'
-  args: ['/workspace/my-app-deployment-dir']
+# Run python unittests
+- name: 'eu.gcr.io/vwt-d-gew1-dat-cloudbuilders/cloudbuilder-unittest'
+  args: ['/workspace/my_api_dir/api_server']
+  env:
+    - PROJECT_ID=$PROJECT_ID
 ```
 
 Or locally on a dev laptop with /workspace as a mounted volume for some local directory:
 
 ```
-docker run -v /Users/user01/git/myapp:/workspace -ti container-unittest /workspace/api_server
+docker run -v /Users/user01/git/myapp:/workspace -ti cloudbuilder-unittest /workspace/api_server
 ```
 
 ## Testing

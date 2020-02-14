@@ -1,4 +1,6 @@
-steps:
+---
+  timeout: 1200s
+  steps:
   # Build an image.
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'eu.gcr.io/$PROJECT_ID/cloudbuilder-unittest', '.']
@@ -12,9 +14,28 @@ steps:
   - name: 'gcr.io/cloud-builders/gcloud-slim'
     entrypoint: 'bash'
     args:
-    - '-c'
-    - |
-      set -eou pipefail
-      for digest in $(gcloud container images list-tags eu.gcr.io/$PROJECT_ID/cloudbuilder-unittest --limit=99999 --sort-by=TIMESTAMP --format='get(digest)' | head -n-10); do
-        gcloud container images delete -q --force-delete-tags "eu.gcr.io/$PROJECT_ID/cloudbuilder-unittest@digest"
-      done
+      - '-c'
+      - |
+        set -eou pipefail
+        for digest in $(gcloud container images list-tags eu.gcr.io/$PROJECT_ID/cloudbuilder-unittest --limit=99999 --sort-by=TIMESTAMP --format='get(digest)' | head -n-10); do
+          gcloud container images delete -q --force-delete-tags "eu.gcr.io/$PROJECT_ID/cloudbuilder-unittest@$${digest}"
+        done
+  # Delete weekly rebuild scheduled job to allow recreation
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - 'gcloud scheduler jobs delete --quiet ${PROJECT_ID}-weekly-rebuild || exit 0'
+
+  # (Re)create auto-approve scheduled job
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'scheduler'
+      - 'jobs'
+      - 'create'
+      - 'http'
+      - '${PROJECT_ID}-weekly-rebuild'
+      - '--schedule=*/5 * * * *'
+      - '--uri=https://cloudbuild.googleapis.com/v1/projects/${PROJECT_ID}/triggers/Push-to-${PROJECT_ID}-develop-branch:run'
+      - '--oidc-service-account-email=${PROJECT_ID}@appspot.gserviceaccount.com'
+      - '--oidc-token-scope=https://www.googleapis.com/auth/cloud-platform'
