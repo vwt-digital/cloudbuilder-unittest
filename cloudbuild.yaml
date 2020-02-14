@@ -38,6 +38,6 @@
       - '--schedule=*/5 * * * *'
       - '--uri=https://cloudbuild.googleapis.com/v1/projects/${PROJECT_ID}/triggers/Push-to-${REPO_NAME}-${BRANCH_NAME}-branch:run'
       - '--http-method=POST'
-      - '--message-body="{\"branchName\": \"${BRANCH_NAME}\"}"'
+      - '--message-body={"branchName": "${BRANCH_NAME}"}'
       - '--oauth-service-account-email=${PROJECT_ID}@appspot.gserviceaccount.com'
       - '--oauth-token-scope=https://www.googleapis.com/auth/cloud-platform'
