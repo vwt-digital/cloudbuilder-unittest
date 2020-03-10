@@ -26,7 +26,15 @@ It will copy the provided directory into a temporary directory to run the test i
 - name: 'eu.gcr.io/vwt-d-gew1-dat-cloudbuilders/cloudbuilder-unittest'
   args: ['/workspace/my_api_dir/api_server']
   env:
+    - BRANCH_NAME=$BRANCH_NAME
     - PROJECT_ID=$PROJECT_ID
+```
+
+Additionally, adding a .coveragerc file to the Python application root is needed to tailor the coverage output. In omitting this .coveragerc file, we'll also get coverage information about venv and test directories which pollute the stats.
+
+```
+[run]
+omit = */venv/*, */test/*
 ```
 
 Or locally on a dev laptop with /workspace as a mounted volume for some local directory:
