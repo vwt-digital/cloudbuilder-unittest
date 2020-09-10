@@ -9,13 +9,11 @@ This container allows us to run unittests using `coverage` on our Python 3.7 cod
     - use the `unittest` Python module
     - are autodiscoverable through their file naming (e.g. `api_server/openapi_server/test/test_blah.py`)
     - are runnable from the application root. For VWT this is the `api_server/` directory most of the time. Note that the application root is different from the project/repository root.
-1. A `requirements-test.txt` file that also includes these Python modules:
-    - `Flask-Testing`
-    - `coverage`
+1. A `requirements.txt` file that includes all the used dependencies
 
 ## Usage
 
-One argument is required to run this container: the root directory of a Python application that contains the `requirements-test.txt` file. For most of our projects this would be the `api_server` subdirectory of a Python project.
+One argument is required to run this container: the root directory of a Python application that contains the `requirements.txt` file. For most of our projects this would be the `api_server` subdirectory of a Python project.
 
 Typically this container would run as a custom build step in a Cloud Build pipeline after preparing a deployment directory, but before actually deploying it to Google App Engine.
 
