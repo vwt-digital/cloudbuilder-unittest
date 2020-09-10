@@ -20,7 +20,7 @@ if [ -f "$1/requirements.txt" ]; then
     echo "Copying $1 to ${MYTEMP}"
     cp -ap "$1" "${MYTEMP}"
     echo "Copying test requirements to ${MYTEMP}"
-    cp requirements-test.txt "${MYTEMP}"
+    cp /requirements-test.txt "${MYTEMP}"
     cd "${MYTEMP}"
     echo "Creating virtualenv"
     virtualenv -p python3.7 venv
