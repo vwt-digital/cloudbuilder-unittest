@@ -1,5 +1,5 @@
 --extra-index-url https://test.pypi.org/simple
-openapi3-fuzzer==1.2.15.dev
+openapi3-fuzzer==1.2.16.dev
 coverage==5.0.3
 adal==1.2.2
 Flask-Testing==0.8
