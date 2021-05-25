@@ -30,6 +30,7 @@ if [ -f "$1/requirements.txt" ]; then
     pip install -r requirements.txt
     pip install -r /requirements-test.txt
     export GOOGLE_CLOUD_PROJECT="${PROJECT_ID}"
+    export API_KEY="${API_KEY}"
     echo "Running coverage run -m unittest on ${PROJECT_ID}"
     coverage run -m unittest
     coverage report -m
