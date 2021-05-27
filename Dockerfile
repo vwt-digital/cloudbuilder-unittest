@@ -1,4 +1,4 @@
-FROM gcr.io/cloud-builders/gcloud-slim
+FROM gcr.io/cloud-builders/gcloud
 WORKDIR /workspace
 RUN add-apt-repository -y ppa:deadsnakes/ppa && \ 
   apt-get -y update && \

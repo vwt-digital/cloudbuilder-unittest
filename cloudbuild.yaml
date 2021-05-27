@@ -1,14 +1,16 @@
 ---
-  timeout: 1200s
-  steps:
+timeout: 1200s
+steps:
   # Build an image.
-  - name: 'gcr.io/cloud-builders/docker'
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:latest'
+    entrypoint: 'docker'
     args: ['build', '-t', 'eu.gcr.io/$PROJECT_ID/cloudbuilder-unittest', '.']
   # Test the image.
   - name: 'gcr.io/gcp-runtimes/container-structure-test'
     args: ['test', '--image', 'eu.gcr.io/$PROJECT_ID/cloudbuilder-unittest', '--config', 'test_config.yaml']
   # Push the image.
-  - name: 'gcr.io/cloud-builders/docker'
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:latest'
+    entrypoint: 'docker'
     args: ['push', 'eu.gcr.io/$PROJECT_ID/cloudbuilder-unittest']
   # Only keep the 10 most recent images
   - name: 'gcr.io/cloud-builders/gcloud-slim'
@@ -17,18 +19,24 @@
       - '-c'
       - |
         set -eou pipefail
-        for digest in $(gcloud container images list-tags eu.gcr.io/$PROJECT_ID/cloudbuilder-unittest --limit=99999 --sort-by=TIMESTAMP --format='get(digest)' | head -n-10); do
+        for digest in\
+         $(gcloud container images list-tags eu.gcr.io/$PROJECT_ID/cloudbuilder-unittest\
+         --limit=99999\
+         --sort-by=TIMESTAMP\
+         --format='get(digest)' | head -n-10); do
           gcloud container images delete -q --force-delete-tags "eu.gcr.io/$PROJECT_ID/cloudbuilder-unittest@$${digest}"
         done
   # Delete weekly rebuild scheduled job to allow recreation
-  - name: 'gcr.io/cloud-builders/gcloud'
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:latest'
     entrypoint: 'bash'
     args:
       - '-c'
       - 'gcloud scheduler jobs delete --quiet ${REPO_NAME}-weekly-rebuild || exit 0'
   # Create weekly rebuild scheduled job
-  - name: 'gcr.io/cloud-builders/gcloud'
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:latest'
+    entrypoint: 'bash'
     args:
+      - 'gcloud'
       - 'scheduler'
       - 'jobs'
       - 'create'
